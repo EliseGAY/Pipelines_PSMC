@@ -1,0 +1,89 @@
+#===========================================#
+# oct 2023
+# Elise GAY
+# Romuald Laso-Jadart 
+# Run PSMC
+# please inform the authors before sharing
+#===========================================#
+
+# Aim : 
+#------#
+Run PSMC on BAM files
+
+# Input :
+#----------#
+BAM file (zipped or not)
+
+# Methods :
+#----------#
+Use PSMC tool by applying the pipeline provides by the authors : https://github.com/lh3/psmc
+This pipeline here is made to provide usable script t orun psmc on the cluster
+Adatped for PSL cluster with SLURM command
+
+How to run the script on the cluster : 
+sh psmc.sh
+note that the "sbatch script.sh" command to run one slurm script on each sample is comprised inside the script "psmc.sh" itself (line 70)
+
+Details :
+The pipeline is divided in 4 steps
+- Variant calling with BCFTOOLS (not GATK)
+- (Optional) Chose only first scaffold / chromosome as you please.
+- fq2psmcfa : create a consensus sequence
+- psmc : run psmc with chosen parameters 
+- psmc_plot.pl : perl script to get the Ne of the chosen iteration.
+
+# output :
+#----------#
+PSMC output are as follow : 
+
+File : consensus.psmcfa
+	Consensus sequences
+
+File :  .psmc
+	- HEADER of the file : 
+		CC
+		CC	Brief Description of the file format:
+		CC	  CC  comments
+		CC	  MM  useful-messages
+		CC	  RD  round-of-iterations
+		CC	  LL  \log[P(sequence)]
+		CC	  QD  Q-before-opt Q-after-opt
+		CC	  TR  \theta_0 \rho_0
+		CC	  RS  k t_k \lambda_k \pi_k \sum_{l\not=k}A_{kl} A_{kk}
+		CC	  DC  begin end best-k t_k+\Delta_k max-prob
+		CC
+		MM	Version: 0.6.5-r67
+		MM	pattern:4+25*2+4+6, n:63, n_free_lambdas:28 # pattern = time interval / n = Nb interval / n_free_lambdas = 
+		MM	n_iterations:30, skip:1, max_t:40, theta/rho:5 # n_iterations = Nb of titeration / max_t : nb max interval 
+		MM	is_decoding:0
+		MM	n_seqs:10, sum_L:6957486, sum_n:278156 # n_seqs: number of sequences
+	
+	- Following by iteration header :
+		IT	6169 
+		RD	1
+		LK	-975421.298044
+		QD	-19719.527525 -> -12031.120010
+		RI	0.0144543040
+		TR	0.034099	0.005444
+		MT	68.653336
+		MM	C_pi: 1.091603, n_recomb: 41225.736374 # C_pi :  / n_recomb : sum of proportino of recombination for each intervall
+		
+	- Table for each iteration :
+		Column output :
+		1 : Time intervall
+		2 : Theta estimation
+		3 : Nb of recombinaison for each interval
+		4 : Prop of recombinaison for each interval
+		5 : Prop of the genome that correspond top the interval
+
+	
+File : _plot.0
+Ne reconstructed
+
+output table of the chosen iteration composed of :
+
+  - The first 2 columns = Time and Ne
+  - three last correspond to the  last 3 columns of the chosen iteration in the .psmc
+ 
+ 
+  
