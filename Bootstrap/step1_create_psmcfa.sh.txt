@@ -1,0 +1,80 @@
+#=============================================================================#
+# RUN PSMC : write and launch a script for each sample
+# STEP 1 : variant calling and split consensus sequences
+#=============================================================================#
+
+# Get a list of basename of your samples
+Basename_samples="sample_1 sample_2 sample_3 sample_4"
+
+# create one script by samples to run PSMC and launch it on the cluster
+for name in $Basename_samples
+do
+
+    #==================#
+    # Load Directories
+    #==================#
+	
+	# Get the directory where you saved the BAM file of each sample from the mapping step
+	# Here the bam files are stored in one folder by samples (saved in DIR_samples viriable)
+    DIR_samples="Your/PATH_TO/Samples_X_BAM/"
+    bam=${DIR_samples}"${name}.sorted.duplicates.bam.gz"
+	
+    # get genome fasta file (preferable to run it on masked genome)
+	genome="/Your/PATH_TO/reference_genome.fasta.masked"
+	
+	# get the global directory where psmc folders will be stored
+	Local_Dir="/Your/PATH_TO/PSMC_FOLDER"
+	
+	# create folder for each samples
+    mkdir ${name}_masked_PSMC
+    cd ${name}_masked_PSMC
+	
+    cat > STEP0_${name}_masked_PSMC.sh << EOF
+#!/bin/bash
+#SBATCH --clusters=mesopsl1
+#SBATCH --account=gay
+#SBATCH --partition=def
+#SBATCH --qos=mesopsl1_def_long
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=16
+#SBATCH --job-name=psmc_${name}
+#SBATCH --time=5-00:00:00
+
+# IMPORT MODULE
+module load gcc/9.2.0
+module load samtools/1.10
+module load psmc
+
+# Make variant calling with bcftools. 
+# Use the $name variable to name the outputs files
+# -Q and -q : Set the min base quality and the min mapping quality
+# -ff : discard unwanted read with 
+# -u : Output uncompressed data. 
+# -v : 
+# -f : genome fasta file
+
+samtools mpileup -Q 30 -q 30 --ff UNMAP,SECONDARY,QCFAIL,DUP  -u -v -f ${genome} ${bam} | bcftools call -c -o ${name}.bcf.gz -O b
+
+# Index
+bcftools index ${name}.bcf.gz .
+
+# create a consensus file 
+# d 10  = min depth per base
+# D 50 = max depth per base
+# Q 30 = min base quality
+# recommanded by PSMC : -d to a third of the average depth and -D to twice
+
+bcftools view ${name}.bcf.gz | vcfutils.pl vcf2fq -d 10 -D 50 -Q 30 | gzip > 40_${name}_50X.consensus.fq.gz
+
+# fastq to fasta
+fq2psmcfa ${name}.consensus.fq.gz > ${name}.consensus.psmcfa
+
+# In simple mode, the PSMC will be run on "consensus.psmcfa" file
+# In bootstrap mode : the consensus.psmcfa has to be subseted and the psmc will be run on each subset before merge all resutls 
+# Split fasta
+splitfa ${name}.consensus.psmcfa >> ${name}.split.consensus.psmcfa
+
+EOF
+    sbatch STEP0_${name}_masked_PSMC.sh
+    cd ${Local_Dir}
+done
