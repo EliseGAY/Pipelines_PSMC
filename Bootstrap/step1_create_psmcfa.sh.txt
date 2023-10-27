@@ -14,18 +14,18 @@ do
     # Load Directories
     #==================#
 	
-	# Get the directory where you saved the BAM file of each sample from the mapping step
-	# Here the bam files are stored in one folder by samples (saved in DIR_samples viriable)
+    # Get the directory where you saved the BAM file of each sample from the mapping step
+    # Here the bam files are stored in one folder by samples (saved in DIR_samples viriable)
     DIR_samples="Your/PATH_TO/Samples_X_BAM/"
     bam=${DIR_samples}"${name}.sorted.duplicates.bam.gz"
 	
     # get genome fasta file (preferable to run it on masked genome)
-	genome="/Your/PATH_TO/reference_genome.fasta.masked"
+    genome="/Your/PATH_TO/reference_genome.fasta.masked"
 	
-	# get the global directory where psmc folders will be stored
-	Local_Dir="/Your/PATH_TO/PSMC_FOLDER"
+    # get the global directory where psmc folders will be stored
+    Local_Dir="/Your/PATH_TO/PSMC_FOLDER"
 	
-	# create folder for each samples
+    # create folder for each samples
     mkdir ${name}_masked_PSMC
     cd ${name}_masked_PSMC
 	
