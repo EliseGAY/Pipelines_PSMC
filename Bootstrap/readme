@@ -30,7 +30,7 @@ note that the "sbatch script.sh" command to run one slurm script on each sample 
 # Details :
 #----------#
 
-The global pipeline need 3 script to be run one after the other
+The global pipeline needs 3 scripts.
 # STEP 1 : 
 	step1_create_psmcfa.sh :  variant calling and split consensus sequences
 	- Variant calling with BCFTOOLS (not GATK)
