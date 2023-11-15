@@ -17,7 +17,7 @@ BAM file (zipped or not)
 # Methods :
 #----------#
 Use PSMC tool by applying the pipeline provides by the authors : https://github.com/lh3/psmc
-This pipeline here is made to provide usable script t orun psmc on the cluster
+This pipeline here is made to provide usable script to run psmc on the cluster
 Adatped for PSL cluster with SLURM command
 
 How to run the script on the cluster : 
