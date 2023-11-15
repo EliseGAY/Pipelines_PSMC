@@ -1,8 +1,8 @@
 
 #===========================================#
 # oct 2023
-# Elise GAY
-# Romuald Laso-Jadart 
+# Elise GAY - MNHN - EPHE
+# Romuald Laso-Jadart - MNHN - EPHE
 # Run PSMC with bootstrap
 # please inform the authors before sharing
 #===========================================#
@@ -25,12 +25,12 @@ How to run the script on the cluster :
 	sh step2_bootstrap_psmc.sh
 	sh step3_combined_plot_psmc.sh
 
-note that the "sbatch script.sh" command to run one slurm script on each sample is comprised inside the script "psmc.sh" itself (line 70)
+note that the "sbatch script.sh" command to run one slurm script on each individuals is comprised inside the script "psmc.sh" itself (line 70)
 
 # Details :
 #----------#
 
-The global pipeline needs 3 scripts.
+Run 3 scripts.
 # STEP 1 : 
 	step1_create_psmcfa.sh :  variant calling and split consensus sequences
 	- Variant calling with BCFTOOLS (not GATK)
@@ -90,6 +90,6 @@ File :  .psmc
 
 	
 File : _plot.0
-	As many as plot file as nb of bootstrap
-	Ne for the iteration table choose to plot
+	As many file as nb of bootstrap
+	Contains Ne for the chosen iteration table to plot
 	
