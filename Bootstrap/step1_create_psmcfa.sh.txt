@@ -26,10 +26,10 @@ do
     Local_Dir="/Your/PATH_TO/PSMC_FOLDER"
 	
     # create folder for each samples
-    mkdir ${name}_masked_PSMC
-    cd ${name}_masked_PSMC
+    mkdir ${name}_PSMC
+    cd ${name}_PSMC
 	
-    cat > STEP0_${name}_masked_PSMC.sh << EOF
+    cat > STEP1_${name}_PSMC.sh << EOF
 #!/bin/bash
 #SBATCH --clusters=mesopsl1
 #SBATCH --account=gay
@@ -64,7 +64,7 @@ bcftools index ${name}.bcf.gz .
 # Q 30 = min base quality
 # recommanded by PSMC : -d to a third of the average depth and -D to twice
 
-bcftools view ${name}.bcf.gz | vcfutils.pl vcf2fq -d 10 -D 50 -Q 30 | gzip > 40_${name}_50X.consensus.fq.gz
+bcftools view ${name}.bcf.gz | vcfutils.pl vcf2fq -d 10 -D 50 -Q 30 | gzip > ${name}.consensus.fq.gz
 
 # fastq to fasta
 fq2psmcfa ${name}.consensus.fq.gz > ${name}.consensus.psmcfa
@@ -75,6 +75,6 @@ fq2psmcfa ${name}.consensus.fq.gz > ${name}.consensus.psmcfa
 splitfa ${name}.consensus.psmcfa >> ${name}.split.consensus.psmcfa
 
 EOF
-    sbatch STEP0_${name}_masked_PSMC.sh
+    sbatch STEP1_${name}_PSMC.sh
     cd ${Local_Dir}
 done
