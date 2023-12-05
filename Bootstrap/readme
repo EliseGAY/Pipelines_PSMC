@@ -37,7 +37,9 @@ Run 3 scripts.
 	- (Optional) Chose only first scaffold / chromosome as you please.
 	- fq2psmcfa : create a consensus sequence
 
-# STEP 2 : step2_bootstrap_psmc : run psmc with '-b' option to do repetition in splitted fasta file
+# STEP 2 : step2_bootstrap_psmc : 
+	run psmc with '-b' option to do repetition in splitted fasta file
+	run psmc with '-s' option to decrease or increase bin size (default -s 100)
 	- psmc : run psmc with chosen parameters 
 
 # STEP 3 : step3_combined_plot_psmc : combine all psmc files and create file for plotting all repetition
