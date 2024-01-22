@@ -36,6 +36,12 @@ Run 3 scripts.
 	- Variant calling with BCFTOOLS (not GATK)
 	- (Optional) Chose only first scaffold / chromosome as you please.
 	- fq2psmcfa : create a consensus sequence
+	- splitfa : split fasta file in shorter segment on which the bootstraps will be made (one PSMC run for each segment)
+	
+	!!!! USE :
+	splitfa XXX.psmcfa (int segment size) > XXX.split.psmcfa
+	only one ">" otherwie the file is way to large 
+	!!!!
 
 # STEP 2 : step2_bootstrap_psmc : 
 	run psmc with '-b' option to do repetition in splitted fasta file
