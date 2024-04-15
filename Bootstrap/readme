@@ -37,7 +37,7 @@ Run 3 scripts.
 	- (Optional) Chose only first scaffold / chromosome as you please.
 	- fq2psmcfa : create a consensus sequence
 		
-	If you want to  change the bin size, use the s-s paramters as follow
+	If you want to  change the bin size, use the -s paramters as follow
 		fq2psmcfa -s 40 XXX.consensus.fq.gz > XXX.consensus.psmcfa
 		!!! Carefull : if you change the bin size (default = 100), you have to re-scale the N size in the PSMC output by the ratio "100/new_bin"
 		
@@ -54,7 +54,6 @@ Comments:
 
 # STEP 2 : step2_bootstrap_psmc : 
 	run psmc with '-b' option to do repetition in splitted fasta file
-	run psmc with '-s' option to decrease or increase bin size (default -s 100)
 	- psmc : run psmc with chosen parameters 
 
 # STEP 3 : step3_combined_plot_psmc : combine all psmc files and create file for plotting all repetition
