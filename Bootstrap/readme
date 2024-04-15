@@ -36,8 +36,17 @@ Run 3 scripts.
 	- Variant calling with BCFTOOLS (not GATK)
 	- (Optional) Chose only first scaffold / chromosome as you please.
 	- fq2psmcfa : create a consensus sequence
+		
+	If you want to  change the bin size, use the s-s paramters as follow
+		fq2psmcfa -s 40 XXX.consensus.fq.gz > XXX.consensus.psmcfa
+		!!! Carefull : if you change the bin size (default = 100), you have to re-scale the N size in the PSMC output by the ratio "100/new_bin"
+		
+
 	- splitfa : split fasta file in shorter segment on which the bootstraps will be made (one PSMC run for each segment)
-	
+		If you want to change the windows size (default = 500Kb) use the command as follow (example on 10Kb) : 
+		"splitfa XXXX.psmcfa 10000 > XXX.consensus.psmcf"
+		
+Comments:
 	!!!! USE :
 	splitfa XXX.psmcfa (int segment size) > XXX.split.psmcfa
 	only one ">" otherwie the file is way to large 
